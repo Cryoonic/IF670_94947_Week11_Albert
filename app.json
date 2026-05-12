@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "IF670_94947_Week11",
+    "slug": "IF670_94947_Week11",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "if670week11",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Aplikasi membutuhkan kamera untuk mengambil foto tugas Week 11.",
+        "NSLocationWhenInUseUsageDescription": "Aplikasi membutuhkan lokasi untuk menyimpan geolokasi foto."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": ["CAMERA", "ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-camera",
+      "expo-location"
+    ]
+  }
+}
