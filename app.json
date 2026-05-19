@@ -19,7 +19,13 @@
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["CAMERA", "ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
+      "permissions": [
+        "CAMERA",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.albert.week12",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro"
@@ -27,7 +33,8 @@
     "plugins": [
       "expo-router",
       "expo-camera",
-      "expo-location"
+      "expo-location",
+      "expo-notifications"
     ]
   }
 }
