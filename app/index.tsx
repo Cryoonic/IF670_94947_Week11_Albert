@@ -1,4 +1,5 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
+import { firebaseStats, resetFirebaseStats } from "@/utils/firebaseStats";
 import * as Location from "expo-location";
 import * as Notifications from "expo-notifications";
 import React, { useRef, useState } from "react";
@@ -81,11 +82,16 @@ export default function Index() {
   ) => {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: success
-          ? "Data Berhasil Masuk Database"
-          : "Data Gagal Masuk Database",
+        title: success ? "Firebase Task Finished" : "Firebase Task Failed",
         body:
-          `Latitude: ${latitude ?? "-"}\n` + `Longitude: ${longitude ?? "-"}`,
+          `Firestore:\n` +
+          `${firebaseStats.firestoreSuccess} successful, ` +
+          `${firebaseStats.firestoreFailed} unsuccessful.\n\n` +
+          `FCM:\n` +
+          `${firebaseStats.fcmSuccess} successful, ` +
+          `${firebaseStats.fcmFailed} unsuccessful.\n\n` +
+          `Latitude: ${latitude ?? "-"}\n` +
+          `Longitude: ${longitude ?? "-"}`,
       },
       trigger: null,
     });
@@ -94,6 +100,8 @@ export default function Index() {
   const takePhotoAndUpload = async () => {
     let latitude: number | null = null;
     let longitude: number | null = null;
+
+    resetFirebaseStats();
 
     try {
       const allowed = await ensurePermissions();
@@ -135,7 +143,10 @@ export default function Index() {
         });
 
       if (uploadError) {
+        firebaseStats.fcmFailed++;
         throw uploadError;
+      } else {
+        firebaseStats.fcmSuccess++;
       }
 
       const { data: publicUrlData } = supabase.storage
@@ -153,8 +164,11 @@ export default function Index() {
         .insert([payload]);
 
       if (insertError) {
+        firebaseStats.firestoreFailed++;
         await sendDatabaseNotification(false, latitude, longitude);
         throw insertError;
+      } else {
+        firebaseStats.firestoreSuccess++;
       }
 
       await sendDatabaseNotification(true, latitude, longitude);
@@ -173,7 +187,7 @@ export default function Index() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>IF670 Week 12</Text>
+      <Text style={styles.title}>IF670 Week 13</Text>
       <Text style={styles.subtitle}>
         Camera + Geolocation + Supabase + Notification
       </Text>
